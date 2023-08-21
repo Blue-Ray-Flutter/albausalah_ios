@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Al-BausalahShop</string>
+    <string name="facebook_app_id">5525319064238619</string>
+    <string name="fb_login_protocol_scheme">fb5525319064238619</string>
+    <string name="facebook_client_token">dec144fad15e614c444b7ef6a3d96678</string>
+</resources>

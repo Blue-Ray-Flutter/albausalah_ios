@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1070758193487",
+    "project_id": "albausalah-shop-app",
+    "storage_bucket": "albausalah-shop-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070758193487:android:161541d227b5811417fd3a",
+        "android_client_info": {
+          "package_name": "com.blueray.albausalah_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070758193487-rggoa1u0ulf0u0easvk2msnca4pvmqck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blueray.albausalah_app",
+            "certificate_hash": "4eba5ad130764388880ce8bc9227d1f47a452707"
+          }
+        },
+        {
+          "client_id": "1070758193487-vq811i4ap4nq00do3cubmmav7lo477v3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcX47-vMd89nBp1yH8lmHYOeLxpe5xaxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070758193487-u5kildms3f8prhpbmkvacud24o2r2418.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

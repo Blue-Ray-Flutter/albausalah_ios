@@ -1,0 +1,112 @@
+class FavoriteProductModel {
+  FavoriteProductModel({
+    this.status,
+    this.success,
+    this.requestDate,
+    this.msg,
+    this.products,
+  });
+
+  FavoriteProductModel.fromJson(dynamic json) {
+    status = json['status'];
+    success = json['success'];
+    requestDate = json['request_date'];
+    msg = json['msg'];
+    if (json['products'] != null) {
+      products = [];
+      json['products'].forEach((v) {
+        products!.add(Products.fromJson(v));
+      });
+    }
+  }
+  int? status;
+  bool? success;
+  String? requestDate;
+  String? msg;
+  List<Products>? products;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['status'] = status;
+    map['success'] = success;
+    map['request_date'] = requestDate;
+    map['msg'] = msg;
+    if (products != null) {
+      map['products'] = products!.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+class Products {
+  Products({
+    this.id,
+    this.name,
+    this.categoryId,
+    this.subCategoryId,
+    this.sku,
+    this.image,
+    this.description,
+    this.salePrice,
+    this.onSalePriceStatus,
+    this.productReview,
+    this.summerOffer,
+    this.storeId,
+    this.orderCount,
+    this.status,
+    this.deletedAt,
+  });
+
+  Products.fromJson(dynamic json) {
+    id = json['id'];
+    name = json['name'];
+    categoryId = json['category_id'];
+    subCategoryId = json['sub_category_id'];
+    sku = json['sku'];
+    image = json['image'];
+    description = json['description'];
+    salePrice = json['sale_price'];
+    onSalePriceStatus = json['on_sale_price_status'];
+    productReview = json['product_review'];
+    summerOffer = json['summer_offer'];
+    storeId = json['store_id'];
+    orderCount = json['order_count'];
+    status = json['status'];
+    deletedAt = json['deleted_at'];
+  }
+  int? id;
+  String? name;
+  int? categoryId;
+  int? subCategoryId;
+  String? sku;
+  String? image;
+  String? description;
+  String? salePrice;
+  String? onSalePriceStatus;
+  String? productReview;
+  String? summerOffer;
+  int? storeId;
+  int? orderCount;
+  String? status;
+  String? deletedAt;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['category_id'] = categoryId;
+    map['sub_category_id'] = subCategoryId;
+    map['sku'] = sku;
+    map['image'] = image;
+    map['description'] = description;
+    map['sale_price'] = salePrice;
+    map['on_sale_price_status'] = onSalePriceStatus;
+    map['product_review'] = productReview;
+    map['summer_offer'] = summerOffer;
+    map['store_id'] = storeId;
+    map['order_count'] = orderCount;
+    map['status'] = status;
+    map['deleted_at'] = deletedAt;
+    return map;
+  }
+}

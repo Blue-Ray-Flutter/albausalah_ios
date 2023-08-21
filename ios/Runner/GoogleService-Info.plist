@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1070758193487-umge0drd2og7sssj1apljmqkuimv9m89.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1070758193487-umge0drd2og7sssj1apljmqkuimv9m89</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1070758193487-rggoa1u0ulf0u0easvk2msnca4pvmqck.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBhBGwJHtVVAvzXdHlD8tBFljvVPLngG3M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1070758193487</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.blueray.albausalahApp</string>
+	<key>PROJECT_ID</key>
+	<string>albausalah-shop-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>albausalah-shop-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1070758193487:ios:2fea7ef4b9b06e1e17fd3a</string>
+</dict>
+</plist>
