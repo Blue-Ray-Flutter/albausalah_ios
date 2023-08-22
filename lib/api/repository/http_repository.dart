@@ -20,6 +20,7 @@ abstract class HttpRepository {
     required String providerId,
   });
 
+  Future<Response?> flagFirebase();
   Future<void> acceptOrder({
     required String lang,
     required String orderId,

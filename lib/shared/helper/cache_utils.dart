@@ -22,6 +22,15 @@ class CacheUtils {
   static const _contentCreatorKey = 'universityId';
   static const _paymentStatusKey = 'universityId';
   static const _statusKey = 'status';
+  static const _flag = 'true';
+
+  Future<void> saveFlag({
+    required bool flag,
+  }) async {
+    _storage.write(_flag, flag);
+  }
+
+  static get getFlag => _flag;
 
   bool isUserLoggedIn() {
     return _storage.hasData(_tokenKey);

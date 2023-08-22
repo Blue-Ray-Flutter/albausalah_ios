@@ -4138,4 +4138,16 @@ class HttpRepositoryImpl extends GetConnect implements HttpRepository {
     }
     return;
   }
+
+  @override
+  Future<Response?> flagFirebase() async {
+    var response = await get(UrlAPI.flagApi);
+    if (response.isOk) {
+      return response;
+    }
+    if (response.hasError) {
+      throw Exception(response.statusText);
+    }
+    return null;
+  }
 }

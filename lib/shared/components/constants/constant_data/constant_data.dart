@@ -33,3 +33,22 @@ class ReceiverData {
     _receiverId = value;
   }
 }
+
+class FlagSingleton {
+  bool? _flag = false;
+
+  // Private constructor
+  FlagSingleton._privateConstructor();
+
+  // Singleton instance
+  static final FlagSingleton _instance = FlagSingleton._privateConstructor();
+
+  // Getter for the instance
+  static FlagSingleton get instance => _instance;
+
+  bool? get getFlag => _flag;
+
+  set setFlag(bool? value) {
+    _flag = value;
+  }
+}

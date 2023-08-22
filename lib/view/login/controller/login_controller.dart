@@ -1,14 +1,18 @@
+import 'package:albausalah_app/api/repository/http_repository_impl.dart';
+import 'package:albausalah_app/shared/components/constants/constant_data/constant_data.dart';
 import 'package:albausalah_app/shared/components/constants/style/color.dart';
 import 'package:albausalah_app/view/base/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../../api/repository/http_repository.dart';
 import '../../../shared/helper/cache_utils.dart';
 import '../../delivery/delivery_order.dart';
+import '../model/flag_firebase.dart';
 import '../model/login_model.dart';
 import '../model/login_slider_model.dart';
 
@@ -25,11 +29,34 @@ class LoginController extends GetxController {
 
   Rx<LoginModel?> loginModel = Rx<LoginModel?>(null);
   Rx<LoginSliderModel?> loginSliderModel = Rx<LoginSliderModel?>(null);
-
+  Rx<bool?> flagStatus = Rx<bool?>(null);
   Rx<IconData> ico = Icons.visibility_outlined.obs;
   RxBool hidePass = true.obs;
+  FlagFirebase? flagModel;
 
   late String? playerId;
+
+  initFlag() async {
+    Response? flagResponse;
+    HttpRepository httpRepository = HttpRepositoryImpl();
+    CacheUtils cacheUtils = CacheUtils(GetStorage());
+
+    flagResponse = await httpRepository.flagFirebase();
+    flagModel = FlagFirebase.fromJson(flagResponse!.body);
+
+    if (flagModel!.status == true) {
+      await cacheUtils.saveFlag(flag: true);
+      FlagSingleton.instance.setFlag = true;
+      // Get.offAll(() => const BaseWidget());
+    } else if (flagModel!.status == false) {
+      FlagSingleton.instance.setFlag = false;
+      await cacheUtils.saveFlag(flag: false);
+    }
+  }
+
+  userFlag() {
+    flagStatus.value = FlagSingleton.instance.getFlag;
+  }
 
   hidePassFun() {
     if (hidePass.value) {
@@ -234,6 +261,7 @@ class LoginController extends GetxController {
   @override
   Future<void> onInit() async {
     await getLoginSlider();
+    await initFlag();
     super.onInit();
   }
 }

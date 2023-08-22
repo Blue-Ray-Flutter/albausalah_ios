@@ -156,4 +156,7 @@ class UrlAPI {
   static const destroyMyServiceUrl = "${baseUrl}customer/destroyMyService";
   static const activeInactiveMyServiceUrl =
       "${baseUrl}customer/activeInactiveMyService";
+
+  static const flagApi =
+      "https://albausalah-shop-app-default-rtdb.firebaseio.com/production_status.json";
 }
