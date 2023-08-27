@@ -27,7 +27,7 @@ class RegisterPage extends GetWidget<RegisterController> {
                 const SizedBox(
                   height: 20,
                 ),
-                 Text(
+                Text(
                   'Register now'.tr,
                   style: const TextStyle(
                     color: AppColor.globalDefaultColor,
@@ -38,7 +38,7 @@ class RegisterPage extends GetWidget<RegisterController> {
                 const SizedBox(
                   height: 10,
                 ),
-                 Text(
+                Text(
                   'Create a new account within a minute'.tr,
                   style: const TextStyle(
                     color: AppColor.globalDefaultColor,

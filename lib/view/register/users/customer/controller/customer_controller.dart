@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:albausalah_app/api/repository/http_repository_impl.dart';
+import 'package:albausalah_app/shared/components/constants/constant_data/constant_data.dart';
+import 'package:albausalah_app/view/login/model/flag_firebase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_icon_button/loading_icon_button.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -20,7 +24,7 @@ import '../model/register_model.dart';
 class CustomerController extends GetxController {
   final HttpRepository httpRepository;
   final CacheUtils cacheUtils;
-
+  Rx<bool?> flagStatus = Rx<bool?>(null);
   CustomerController({required this.httpRepository, required this.cacheUtils});
 
   Rx<GeoPoint?> notifier = Rx<GeoPoint?>(null);
@@ -53,6 +57,32 @@ class CustomerController extends GetxController {
   RxDouble long = RxDouble(0.0);
 
   final LoadingButtonController btnController = LoadingButtonController();
+
+  initFlag() async {
+    try {
+      Response? flagResponse;
+      FlagFirebase? flagModel;
+      HttpRepository httpRepository = HttpRepositoryImpl();
+      CacheUtils cacheUtils = CacheUtils(GetStorage());
+
+      flagResponse = await httpRepository.flagFirebase();
+      flagModel = FlagFirebase.fromJson(flagResponse!.body);
+      bool? flag = flagModel.status;
+
+      if (flag == true) {
+        await cacheUtils.saveFlag(flag: true);
+        FlagSingleton.instance.setFlag = true;
+        flagStatus.value = true;
+        // Get.offAll(() => const BaseWidget());
+      } else if (flag == false) {
+        FlagSingleton.instance.setFlag = false;
+        await cacheUtils.saveFlag(flag: false);
+        flagStatus.value = false;
+      }
+    } catch (e) {
+      flagStatus.value = false;
+    }
+  }
 
   Future<void> registerCustomer() async {
     var status = await OneSignal.shared.getDeviceState();
@@ -241,26 +271,26 @@ class CustomerController extends GetxController {
     return true;
   }
 
-  facebookSignUp() async {
-    try {
-      final result =
-          await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
-      if (result.status == LoginStatus.success) {
-        try {
-          final userData = await FacebookAuth.i.getUserData();
-          withFaceSocial.value = true;
-          emailController.text = userData['email'];
-          nameController.text = userData['name'];
-        } catch (e) {
-          withFaceSocial.value = true;
-          withGoogleSocial.value = false;
-          e.printError();
-        }
-      }
-    } catch (error) {
-      throw Exception("Facebook sign up");
-    }
-  }
+  // facebookSignUp() async {
+  //   try {
+  //     final result =
+  //         await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
+  //     if (result.status == LoginStatus.success) {
+  //       try {
+  //         final userData = await FacebookAuth.i.getUserData();
+  //         withFaceSocial.value = true;
+  //         emailController.text = userData['email'];
+  //         nameController.text = userData['name'];
+  //       } catch (e) {
+  //         withFaceSocial.value = true;
+  //         withGoogleSocial.value = false;
+  //         e.printError();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     throw Exception("Facebook sign up");
+  //   }
+  // }
 
   googleSignUp() async {
     GoogleSignInAccount? currentUser = await GoogleSignIn().signIn();
@@ -279,5 +309,11 @@ class CustomerController extends GetxController {
     if (path != null) {
       image.value = path;
     }
+  }
+
+  @override
+  Future<void> onInit() async {
+    initFlag();
+    super.onInit();
   }
 }

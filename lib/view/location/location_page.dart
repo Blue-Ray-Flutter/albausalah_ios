@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -47,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
         controller: controller,
         appBarPicker: AppBar(
           elevation: 0,
-          title:  Text(
+          title: Text(
             'Pick your address'.tr,
           ),
           centerTitle: true,
@@ -123,19 +124,42 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ),
-        pickerConfig: const CustomPickerLocationConfig(
+        pickerConfig: CustomPickerLocationConfig(
             initZoom: 8,
             advancedMarkerPicker: MarkerIcon(
-              icon: Icon(
-                Icons.location_on,
-                size: 150,
-                color: AppColor.globalDefaultColor,
-              ),
+              icon: Platform.isIOS
+                  ? const Icon(
+                      Icons.location_on,
+                      size: 10,
+                      color: AppColor.globalDefaultColor,
+                    )
+                  : const Icon(
+                      Icons.location_on,
+                      size: 150,
+                      color: AppColor.globalDefaultColor,
+                    ),
             )),
       ),
     );
   }
 }
+
+// Future<void> checkDeviceManufacturer() async {
+//   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+//
+//
+//   if (Platform.isAndroid) {
+//     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+//
+//     if (Platform.isIOS) {
+//       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+//
+//     } else if (Platform.isAndroid){
+//
+//
+//     }
+//   }
+// }
 
 class TopSearchWidget extends StatefulWidget {
   const TopSearchWidget({super.key});

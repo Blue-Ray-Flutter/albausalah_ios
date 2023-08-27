@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:albausalah_app/api/repository/http_repository_impl.dart';
+import 'package:albausalah_app/shared/components/constants/constant_data/constant_data.dart';
+import 'package:albausalah_app/view/login/model/flag_firebase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -18,7 +21,7 @@ import '../../customer/model/register_model.dart';
 class StoreSignupController extends GetxController {
   final HttpRepository httpRepository;
   final CacheUtils cacheUtils;
-
+  Rx<bool?> flagStatus = Rx<bool?>(null);
   StoreSignupController(
       {required this.httpRepository, required this.cacheUtils});
 
@@ -68,6 +71,32 @@ class StoreSignupController extends GetxController {
 
   RxInt selectedValueStoreType = RxInt(0);
   RxInt selectedValueDeliveryType = RxInt(0);
+
+  initFlag() async {
+    try {
+      Response? flagResponse;
+      FlagFirebase? flagModel;
+      HttpRepository httpRepository = HttpRepositoryImpl();
+      CacheUtils cacheUtils = CacheUtils(GetStorage());
+
+      flagResponse = await httpRepository.flagFirebase();
+      flagModel = FlagFirebase.fromJson(flagResponse!.body);
+      bool? flag = flagModel.status;
+
+      if (flag == true) {
+        await cacheUtils.saveFlag(flag: true);
+        FlagSingleton.instance.setFlag = true;
+        flagStatus.value = true;
+        // Get.offAll(() => const BaseWidget());
+      } else if (flag == false) {
+        FlagSingleton.instance.setFlag = false;
+        await cacheUtils.saveFlag(flag: false);
+        flagStatus.value = false;
+      }
+    } catch (e) {
+      flagStatus.value = false;
+    }
+  }
 
   Future<void> registerStore() async {
     var status = await OneSignal.shared.getDeviceState();
@@ -214,24 +243,24 @@ class StoreSignupController extends GetxController {
     }
   }
 
-  facebookSignUp() async {
-    try {
-      final result =
-          await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
-      if (result.status == LoginStatus.success) {
-        try {
-          final userData = await FacebookAuth.i.getUserData();
-          withFaceSocial.value = true;
-          emailController.text = userData['email'];
-          nameController.text = userData['name'];
-        } catch (e) {
-          withFaceSocial.value = true;
-          withGoogleSocial.value = false;
-          e.printError();
-        }
-      }
-    } catch (error) {}
-  }
+  // facebookSignUp() async {
+  //   try {
+  //     final result =
+  //         await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
+  //     if (result.status == LoginStatus.success) {
+  //       try {
+  //         final userData = await FacebookAuth.i.getUserData();
+  //         withFaceSocial.value = true;
+  //         emailController.text = userData['email'];
+  //         nameController.text = userData['name'];
+  //       } catch (e) {
+  //         withFaceSocial.value = true;
+  //         withGoogleSocial.value = false;
+  //         e.printError();
+  //       }
+  //     }
+  //   } catch (error) {}
+  // }
 
   googleSignUp() async {
     GoogleSignInAccount? currentUser = await GoogleSignIn().signIn();
@@ -329,6 +358,7 @@ class StoreSignupController extends GetxController {
   @override
   Future<void> onInit() async {
     await getCities();
+    initFlag();
     super.onInit();
   }
 }

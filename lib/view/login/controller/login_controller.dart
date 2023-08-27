@@ -3,7 +3,6 @@ import 'package:albausalah_app/shared/components/constants/constant_data/constan
 import 'package:albausalah_app/shared/components/constants/style/color.dart';
 import 'package:albausalah_app/view/base/base_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -37,25 +36,29 @@ class LoginController extends GetxController {
   late String? playerId;
 
   initFlag() async {
-    Response? flagResponse;
-    HttpRepository httpRepository = HttpRepositoryImpl();
-    CacheUtils cacheUtils = CacheUtils(GetStorage());
+    try {
+      Response? flagResponse;
+      FlagFirebase? flagModel;
+      HttpRepository httpRepository = HttpRepositoryImpl();
+      CacheUtils cacheUtils = CacheUtils(GetStorage());
 
-    flagResponse = await httpRepository.flagFirebase();
-    flagModel = FlagFirebase.fromJson(flagResponse!.body);
+      flagResponse = await httpRepository.flagFirebase();
+      flagModel = FlagFirebase.fromJson(flagResponse!.body);
+      bool? flag = flagModel.status;
 
-    if (flagModel!.status == true) {
-      await cacheUtils.saveFlag(flag: true);
-      FlagSingleton.instance.setFlag = true;
-      // Get.offAll(() => const BaseWidget());
-    } else if (flagModel!.status == false) {
-      FlagSingleton.instance.setFlag = false;
-      await cacheUtils.saveFlag(flag: false);
+      if (flag == true) {
+        await cacheUtils.saveFlag(flag: true);
+        FlagSingleton.instance.setFlag = true;
+        flagStatus.value = true;
+        // Get.offAll(() => const BaseWidget());
+      } else if (flag == false) {
+        FlagSingleton.instance.setFlag = false;
+        await cacheUtils.saveFlag(flag: false);
+        flagStatus.value = false;
+      }
+    } catch (e) {
+      flagStatus.value = false;
     }
-  }
-
-  userFlag() {
-    flagStatus.value = FlagSingleton.instance.getFlag;
   }
 
   hidePassFun() {
@@ -206,24 +209,24 @@ class LoginController extends GetxController {
     }
   }
 
-  facebookLogin() async {
-    try {
-      final result =
-          await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
-      if (result.status == LoginStatus.success) {
-        try {
-          final userData = await FacebookAuth.i.getUserData();
-          logInWithSocial(
-            email: userData['email'],
-            provider: 'Facebook',
-            providerId: userData['id'],
-          );
-        } catch (e) {
-          e.printError();
-        }
-      }
-    } catch (error) {}
-  }
+  // facebookLogin() async {
+  //   try {
+  //     final result =
+  //         await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
+  //     if (result.status == LoginStatus.success) {
+  //       try {
+  //         final userData = await FacebookAuth.i.getUserData();
+  //         logInWithSocial(
+  //           email: userData['email'],
+  //           provider: 'Facebook',
+  //           providerId: userData['id'],
+  //         );
+  //       } catch (e) {
+  //         e.printError();
+  //       }
+  //     }
+  //   } catch (error) {}
+  // }
 
   getLoginSlider() async {
     late Rx<Response?> loginSliderResponse = Rx<Response?>(null);
@@ -261,7 +264,7 @@ class LoginController extends GetxController {
   @override
   Future<void> onInit() async {
     await getLoginSlider();
-    await initFlag();
+    initFlag();
     super.onInit();
   }
 }

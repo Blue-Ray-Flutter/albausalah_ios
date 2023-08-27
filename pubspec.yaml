@@ -21,7 +21,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.1.0+1
   favorite_button: ^0.0.4
   flutter_add_to_cart_button: ^1.1.0
-  get_storage: ^2.0.3
+  get_storage: ^2.1.1
   webview_flutter: ^3.0.4
   url_launcher: ^6.1.10
   image_picker: ^0.8.7+4
@@ -33,7 +33,7 @@ dependencies:
   flutter_svg: 2.0.5
   animated_icon_button: ^1.0.2
   cool_dropdown: ^1.4.2
-  flutter_facebook_auth : ^5.0.7
+#  flutter_facebook_auth : ^5.0.7
   firebase_auth: ^4.2.8
   google_sign_in: ^5.4.4
   loading_icon_button: ^0.0.5+1
@@ -73,6 +73,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   share_plus: ^7.0.2
   file_selector: ^1.0.0
+  device_info_plus: ^9.0.3
 
 
 
